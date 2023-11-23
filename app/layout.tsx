@@ -2,11 +2,22 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Children } from '@/lib/types';
+import siteConfig from '@/lib/config';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Taskify Task Management',
+  title: {
+    default: siteConfig.title,
+    template: `%2 / ${siteConfig.title}`,
+  },
+  description: siteConfig.description,
+  icons: [
+    {
+      url: '/logo.svg',
+      href: '/logo.svg',
+    },
+  ],
 };
 
 interface RootLayoutProps {
