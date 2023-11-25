@@ -1,18 +1,7 @@
-/* eslint-disable */
-
-interface OrganizationIdPageProps {
-  prop: string;
-}
-
-const OrganizationIdPage = ({
-  prop,
-}: OrganizationIdPageProps) => {
-  console.log();
-  return (
-    <div>
-      OrganizationIdPage
-    </div>
-  );
-}
+const OrganizationIdPage = () => (
+  <div className="bg-red-500">
+    OrganizationIdPage
+  </div>
+);
 
 export default OrganizationIdPage;
