@@ -1,23 +1,15 @@
-import prismadb from '@/lib/db';
-import Board from './_components/Board';
-import Form from './_components/Form';
+import { Separator } from '@/components/ui/common/shadcn/separator';
+import Info from './_components/Info';
+import BoardList from './_components/BoardList';
 
-const OrganizationIdPage = async () => {
-  const boards = await prismadb.board.findMany();
-  return (
-    <div className="flex flex-col space-y-4">
-      <Form />
-      <div className="space-y-2">
-        {boards.map((b) => (
-          <Board
-            id={b.id}
-            title={b.title}
-            key={b.id}
-          />
-        ))}
-      </div>
+const OrganizationIdPage = async () => (
+  <div className="w-full mb-20">
+    <Info />
+    <Separator className="my-4" />
+    <div className="px-2 md:px-4">
+      <BoardList />
     </div>
-  );
-};
+  </div>
+);
 
 export default OrganizationIdPage;
