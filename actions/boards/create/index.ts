@@ -32,6 +32,7 @@ const handler = async (data: CreateBoardInputType) => {
   try {
     board = await prismadb.board.create({
       data: {
+        orgId,
         title,
         imageId,
         imageThumbUrl,

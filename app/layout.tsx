@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: {
     default: siteConfig.title,
-    template: `%2 / ${siteConfig.title}`,
+    template: `%s / ${siteConfig.title}`,
   },
   description: siteConfig.description,
   icons: [
