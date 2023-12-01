@@ -6,11 +6,15 @@ import { Children } from '@/lib/types';
 import { X } from 'lucide-react';
 import createBoard from '@/actions/boards/create';
 import { toast } from 'sonner';
+import { ElementRef, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { BOARD_ROUTE } from '@/lib/data/routes';
 import {
   Popover, PopoverClose, PopoverContent, PopoverTrigger,
 } from '../shadcn/popover';
 import FormInput from './FormInput';
 import FormSubmit from './FormSubmit';
+import FormPicker from './FormPicker';
 
 interface FormPopoverProps extends ButtonProps {
   children: Children;
@@ -25,20 +29,24 @@ const FormPopover = ({
   align,
   sideOffset = 0,
 }: FormPopoverProps) => {
+  const router = useRouter();
+  const closeRef = useRef<ElementRef<'button'>>(null);
   const { execute, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
-      console.log(data);
       toast.success('Board created!');
+      closeRef?.current?.click();
+      router.push(`/${BOARD_ROUTE}/${data.id}`);
     },
     onError: (e) => {
-      console.log(e);
       toast.error(e);
     },
   });
   const onSubmit = (formData: FormData) => {
     const title = formData.get('title') as string;
+    const image = formData.get('image') as string;
     execute({
       title,
+      image,
     });
   };
   return (
@@ -50,7 +58,7 @@ const FormPopover = ({
         <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           Create Board
         </div>
-        <PopoverClose asChild>
+        <PopoverClose ref={closeRef} asChild>
           <Button
             className="absolute h-auto w-auto p-2 top-2 right-2 text-neutral-600"
             variant="ghost"
@@ -59,6 +67,12 @@ const FormPopover = ({
           </Button>
         </PopoverClose>
         <form className="space-y-4" action={onSubmit}>
+          <div className="space-y-4">
+            <FormPicker
+              id="image"
+              errors={fieldErrors}
+            />
+          </div>
           <FormInput
             id="title"
             label="Board title"

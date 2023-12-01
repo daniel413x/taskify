@@ -21,6 +21,7 @@ const FormSubmit = ({
       className={cn(props.className, '')}
       type="submit"
       disabled={pending}
+      variant="primary"
     >
       {children}
     </Button>

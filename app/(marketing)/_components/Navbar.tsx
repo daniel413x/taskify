@@ -8,12 +8,12 @@ const Navbar: FC = () => (
     <div className="flex items-center justify-between w-full mx-auto md:max-w-screen-2xl">
       <Logo />
       <nav className="flex items-center justify-between w-full space-x-4 md:block md:w-auto">
-        <Button className="" variant="outline" asChild>
+        <Button variant="outline" asChild>
           <Link href="/sign-in">
             Login
           </Link>
         </Button>
-        <Button className="" size="sm" asChild>
+        <Button size="sm" asChild>
           <Link href="/sign-up">
             Get Taskify for free
           </Link>

@@ -3,6 +3,7 @@ import Logo from '@/components/ui/common/Logo';
 import { Button } from '@/components/ui/common/shadcn/button';
 import { OrganizationSwitcher, UserButton } from '@clerk/nextjs';
 import { ORGANIZATION_ROUTE, SELECT_ORGANIZATION_ROUTE } from '@/lib/data/routes';
+import FormPopover from '@/components/ui/common/form/FormPopover';
 import MobileSidebar from './MobileSidebar';
 
 const Navbar = () => (
@@ -10,12 +11,21 @@ const Navbar = () => (
     <MobileSidebar />
     <div className="flex items-center md:gap-x-4">
       <Logo />
-      <Button variant="primary" size="sm" className="rounded-sm hidden md:block h-auto py-1.5 px-2">
-        Create
-      </Button>
-      <Button variant="primary" size="sm" className="rounded-sm md:hidden block">
-        <Plus width={16} height={16} />
-      </Button>
+      <FormPopover
+        align="start"
+        side="bottom"
+        sideOffset={18}
+      >
+        <Button variant="primary" size="sm" className="rounded-sm hidden md:block h-auto py-1.5 px-2">
+          Create
+        </Button>
+      </FormPopover>
+      {/* mobile */}
+      <FormPopover>
+        <Button variant="primary" size="sm" className="rounded-sm md:hidden block">
+          <Plus width={16} height={16} />
+        </Button>
+      </FormPopover>
     </div>
     <div className="ml-auto flex items-center gap-x-2">
       <OrganizationSwitcher
