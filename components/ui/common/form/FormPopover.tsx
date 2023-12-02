@@ -1,9 +1,8 @@
 'use client';
 
-import { Button, ButtonProps } from '@/components/ui/common/shadcn/button';
+import { ButtonProps } from '@/components/ui/common/shadcn/button';
 import useAction from '@/lib/hooks/useAction';
 import { Children } from '@/lib/types';
-import { X } from 'lucide-react';
 import createBoard from '@/actions/boards/create';
 import { toast } from 'sonner';
 import { ElementRef, useRef } from 'react';
@@ -15,6 +14,7 @@ import {
 import FormInput from './FormInput';
 import FormSubmit from './FormSubmit';
 import FormPicker from './FormPicker';
+import CloseButton from '../PopoverClose';
 
 interface FormPopoverProps extends ButtonProps {
   children: Children;
@@ -59,12 +59,7 @@ const FormPopover = ({
           Create Board
         </div>
         <PopoverClose ref={closeRef} asChild>
-          <Button
-            className="absolute h-auto w-auto p-2 top-2 right-2 text-neutral-600"
-            variant="ghost"
-          >
-            <X width={16} height={16} />
-          </Button>
+          <CloseButton />
         </PopoverClose>
         <form className="space-y-4" action={onSubmit}>
           <div className="space-y-4">

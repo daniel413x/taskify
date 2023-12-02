@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
-const DeleteBoardSchema = z.string({
-  required_error: 'Id is required',
-  invalid_type_error: 'Id is required',
+const DeleteBoardSchema = z.object({
+  id: z.string(),
 });
 
 export default DeleteBoardSchema;
