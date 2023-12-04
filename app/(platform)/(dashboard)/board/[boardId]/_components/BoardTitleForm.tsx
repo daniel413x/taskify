@@ -4,7 +4,6 @@ import updateBoard from '@/actions/boards/update';
 import FormInput from '@/components/ui/common/form/FormInput';
 import { Button } from '@/components/ui/common/shadcn/button';
 import useAction from '@/lib/hooks/useAction';
-import { errorCatch } from '@/lib/utils';
 import { Board } from '@prisma/client';
 import { ElementRef, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -39,7 +38,7 @@ const BoardTitleForm = ({
       toast.success(`Board "${data.title}" updated!`);
     },
     onError: (e) => {
-      toast.error(errorCatch(e));
+      toast.error(e);
     },
   });
   const onSubmit = (formData: FormData) => {

@@ -3,7 +3,6 @@
 import deleteBoard from '@/actions/boards/delete';
 import { Button } from '@/components/ui/common/shadcn/button';
 import useAction from '@/lib/hooks/useAction';
-import { errorCatch } from '@/lib/utils';
 import { toast } from 'sonner';
 import { MoreHorizontal, X } from 'lucide-react';
 import {
@@ -25,7 +24,7 @@ const BoardOptions = ({
       toast.success(`Board "${data.title}" deleted!`);
     },
     onError: (e) => {
-      toast.error(errorCatch(e));
+      toast.error(e);
     },
   });
   const onDelete = () => {
