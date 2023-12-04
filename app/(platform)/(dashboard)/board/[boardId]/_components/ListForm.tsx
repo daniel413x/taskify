@@ -26,6 +26,7 @@ const ListForm = ({
     setIsEditing(true);
     setTimeout(() => {
       inputRef.current?.focus();
+      inputRef.current?.select();
     });
   };
   const disableEditing = () => {
