@@ -1,7 +1,7 @@
 import { ActionState, FieldErrors } from '@/actions/utils/create-validated-action';
 import { useCallback, useState } from 'react';
 
-type Action<I, O> = (data: I) => Promise<ActionState<I, O>>;
+export type Action<I, O> = (data: I) => Promise<ActionState<I, O>>;
 
 interface UseActionOptions<O> {
   onSuccess?: (data: O) => void;

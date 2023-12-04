@@ -5,9 +5,10 @@ import FormInput from '@/components/ui/common/form/FormInput';
 import { Button } from '@/components/ui/common/shadcn/button';
 import useAction from '@/lib/hooks/useAction';
 import { ListWithCards } from '@/lib/types';
-import { ElementRef, useRef, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
-import { useEventListener } from 'usehooks-ts';
+import useOnKeyDown from '@/lib/hooks/useOnKeyDown';
+import useInlineEditing from './useInlineEditing';
 
 interface ListHeaderProps {
   list: ListWithCards;
@@ -16,26 +17,15 @@ interface ListHeaderProps {
 const ListHeader = ({
   list,
 }: ListHeaderProps) => {
+  const {
+    formRef,
+    inputRef,
+    isEditing,
+    enableEditing,
+    disableEditing,
+    onBlur,
+  } = useInlineEditing();
   const [title, setTitle] = useState<string>(list.title);
-  const formRef = useRef<ElementRef<'form'>>(null);
-  const inputRef = useRef<ElementRef<'input'>>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const enableEditing = () => {
-    setIsEditing(true);
-    setTimeout(() => {
-      inputRef.current?.focus();
-      inputRef.current?.select();
-    });
-  };
-  const disableEditing = () => {
-    setIsEditing(false);
-  };
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      disableEditing();
-    }
-  };
-  useEventListener('keydown', onKeyDown);
   const {
     execute,
     isLoading,
@@ -43,11 +33,12 @@ const ListHeader = ({
   } = useAction(updateList, {
     onSuccess: (data) => {
       toast.success(`Renamed to "${data.title}"!`);
-      disableEditing();
       setTitle(data.title);
+      disableEditing();
     },
     onError: (e) => {
       toast.error(e);
+      setTitle(list.title);
     },
   });
   const onSubmit = (formData: FormData) => {
@@ -63,10 +54,12 @@ const ListHeader = ({
       boardId: newBoardId,
     });
   };
-  const onBlur = () => {
-    formRef.current?.requestSubmit();
-    disableEditing();
+  const onEscape = () => {
+    if (isEditing) {
+      setTitle(list.title);
+    }
   };
+  useOnKeyDown('Escape', onEscape);
   return (
     <div className="p-3 font-semibold text-sm flex justify-center items-start gap-x-2">
       {isEditing ? (
@@ -108,7 +101,7 @@ const ListHeader = ({
           variant="ghost"
           onClick={enableEditing}
         >
-          {list.title}
+          {title}
         </Button>
       )}
     </div>

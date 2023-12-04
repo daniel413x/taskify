@@ -1,8 +1,6 @@
 'use client';
 
 import { Plus, X } from 'lucide-react';
-import { ElementRef, useRef, useState } from 'react';
-import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 import FormInput from '@/components/ui/common/form/FormInput';
 import FormSubmit from '@/components/ui/common/form/FormSubmit';
 import { Button } from '@/components/ui/common/shadcn/button';
@@ -11,6 +9,7 @@ import { toast } from 'sonner';
 import createList from '@/actions/lists/create';
 import { useRouter } from 'next/navigation';
 import ListWrapper from './ListWrapper';
+import useInlineEditing from './useInlineEditing';
 
 interface ListFormProps {
   boardId: string;
@@ -19,26 +18,13 @@ interface ListFormProps {
 const ListForm = ({
   boardId,
 }: ListFormProps) => {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const formRef = useRef<ElementRef<'form'>>(null);
-  const inputRef = useRef<ElementRef<'input'>>(null);
-  const enableEditing = () => {
-    setIsEditing(true);
-    setTimeout(() => {
-      inputRef.current?.focus();
-      inputRef.current?.select();
-    });
-  };
-  const disableEditing = () => {
-    setIsEditing(false);
-  };
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') {
-      disableEditing();
-    }
-  };
-  useEventListener('keydown', onKeyDown);
-  useOnClickOutside(formRef, disableEditing);
+  const {
+    formRef,
+    inputRef,
+    isEditing,
+    enableEditing,
+    disableEditing,
+  } = useInlineEditing();
   const router = useRouter();
   const {
     execute,

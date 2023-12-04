@@ -5,8 +5,9 @@ import FormInput from '@/components/ui/common/form/FormInput';
 import { Button } from '@/components/ui/common/shadcn/button';
 import useAction from '@/lib/hooks/useAction';
 import { Board } from '@prisma/client';
-import { ElementRef, useRef, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
+import useInlineEditing from './useInlineEditing';
 
 interface BoardTitleFormProps {
   board: Board;
@@ -15,20 +16,15 @@ interface BoardTitleFormProps {
 const BoardTitleForm = ({
   board,
 }: BoardTitleFormProps) => {
-  const formRef = useRef<ElementRef<'form'>>(null);
-  const inputRef = useRef<ElementRef<'input'>>(null);
+  const {
+    formRef,
+    inputRef,
+    isEditing,
+    enableEditing,
+    disableEditing,
+    onBlur,
+  } = useInlineEditing();
   const [title, setTitle] = useState<string>(board.title);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const enableEditing = () => {
-    setTimeout(() => {
-      inputRef.current?.focus();
-      inputRef.current?.select();
-    });
-    setIsEditing(true);
-  };
-  const disableEditing = () => {
-    setIsEditing(false);
-  };
   const {
     execute,
   } = useAction(updateBoard, {
@@ -43,9 +39,6 @@ const BoardTitleForm = ({
   });
   const onSubmit = (formData: FormData) => {
     execute({ title: formData.get('title') as string, id: board.id });
-  };
-  const onBlur = () => {
-    formRef.current?.requestSubmit();
   };
   if (isEditing) {
     return (
