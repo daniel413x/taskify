@@ -14,7 +14,7 @@ import {
 import FormInput from './FormInput';
 import FormSubmit from './FormSubmit';
 import FormPicker from './FormPicker';
-import CloseButton from '../PopoverClose';
+import CloseButton from '../CloseButton';
 
 interface FormPopoverProps extends ButtonProps {
   children: Children;

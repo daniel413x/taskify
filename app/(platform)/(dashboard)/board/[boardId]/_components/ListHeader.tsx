@@ -61,7 +61,7 @@ const ListHeader = ({
   };
   useOnKeyDown('Escape', onEscape);
   return (
-    <div className="p-3 font-semibold text-sm flex justify-center items-start gap-x-2">
+    <div className="p-3 font-semibold text-sm flex justify-center items-center gap-x-2">
       {isEditing ? (
         <form
           className="flex-1 px-[2px]"

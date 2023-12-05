@@ -8,6 +8,7 @@ import useAction from '@/lib/hooks/useAction';
 import { toast } from 'sonner';
 import createList from '@/actions/lists/create';
 import { useRouter } from 'next/navigation';
+import { useOnClickOutside } from 'usehooks-ts';
 import ListWrapper from './ListWrapper';
 import useInlineEditing from './useInlineEditing';
 
@@ -43,12 +44,13 @@ const ListForm = ({
   const onSubmit = (formData: FormData) => {
     execute({ title: formData.get('title') as string, boardId });
   };
+  useOnClickOutside(formRef, disableEditing);
   if (isEditing) {
     return (
       <ListWrapper>
         <form
           ref={formRef}
-          className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"
+          className="w-full p-3 rounded-md space-y-4 shadow-md bg-white/50"
           action={onSubmit}
         >
           <FormInput
@@ -81,7 +83,7 @@ const ListForm = ({
   }
   return (
     <ListWrapper>
-      <form className="w-full p-3 rounded-md bg-white/80 hover:bg-white/50 space-y-4 shadow-md">
+      <form className="w-full p-3 rounded-md space-y-4 shadow-md hover:bg-white/50">
         <button
           className="w-full h-7 rounded-md transition p-3 flex items-center font-medium text-sm"
           type="button"

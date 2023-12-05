@@ -21,11 +21,10 @@ const ListContainer = ({
   return (
     <ol className="flex gap-x-3 h-full">
       {orderedLists.map((l) => (
-        <li key={l.id}>
-          <ListItem
-            list={l}
-          />
-        </li>
+        <ListItem
+          key={l.id}
+          list={l}
+        />
       ))}
       <ListForm key="create" boardId={boardId} />
       <div className="flex-shrink-0 w-1" />

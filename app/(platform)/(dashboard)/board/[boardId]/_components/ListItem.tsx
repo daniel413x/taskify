@@ -10,9 +10,7 @@ const ListItem = ({
   list,
 }: ListItemProps) => (
   <ListWrapper>
-    <div className="w-full rounded-md bg-[#f1f2f4] shadow-md">
-      <ListHeader list={list} />
-    </div>
+    <ListHeader list={list} />
   </ListWrapper>
 );
 
