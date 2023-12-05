@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import useOnKeyDown from '@/lib/hooks/useOnKeyDown';
 import useInlineEditing from './useInlineEditing';
+import ListOptions from './ListOptions';
 
 interface ListHeaderProps {
   list: ListWithCards;
@@ -104,6 +105,10 @@ const ListHeader = ({
           {title}
         </Button>
       )}
+      <ListOptions
+        list={list}
+        onAddCard={() => ({})}
+      />
     </div>
   );
 };
