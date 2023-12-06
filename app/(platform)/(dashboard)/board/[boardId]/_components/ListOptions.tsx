@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 
 interface ListOptionsProps {
   list: List;
-  onAddCard: () => {};
+  onAddCard: () => void;
 }
 
 const ListOptions = ({
