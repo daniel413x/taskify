@@ -3,8 +3,12 @@
 import { ListWithCards } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
-import ListForm from './ListForm';
+import updateListOrder from '@/actions/lists/update-list-order';
+import useAction from '@/lib/hooks/useAction';
+import { toast } from 'sonner';
+import updateCardOrder from '@/actions/cards/update-card-order';
 import ListItem from './ListItem';
+import ListForm from './ListForm';
 
 // move either Lists or Cards
 const reorder = <T extends {}>(
@@ -28,6 +32,22 @@ const ListContainer = ({
   lists,
   boardId,
 }: ListContainerProps) => {
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast.success('List reordered!');
+    },
+    onError: (e) => {
+      toast.error(e);
+    },
+  });
+  const { execute: executeUpdateCardOrder } = useAction(updateCardOrder, {
+    onSuccess: () => {
+      toast.success('Cards reordered!');
+    },
+    onError: (e) => {
+      toast.error(e);
+    },
+  });
   const [orderedLists, setOrderedLists] = useState<ListWithCards[]>([]);
   useEffect(() => {
     setOrderedLists(lists);
@@ -53,7 +73,7 @@ const ListContainer = ({
         destination.index,
       ).map((item, index) => ({ ...item, order: index }));
       setOrderedLists(reorderedLists);
-      // TODO: server action
+      executeUpdateListOrder({ items: reorderedLists, boardId });
     }
     // user moves a card: either cross-lists or within the same list
     if (type === 'card') {
@@ -83,7 +103,7 @@ const ListContainer = ({
         }));
         sourceList.cards = reorderedCards;
         setOrderedLists(reorderedLists);
-        // TODO: server action
+        executeUpdateCardOrder({ items: reorderedCards, boardId });
         // user moves a card to another list
       } else {
         // create new source list from which to remove the card
@@ -106,6 +126,7 @@ const ListContainer = ({
           ...c,
           order: i,
         }));
+        executeUpdateCardOrder({ items: newDestCards, boardId });
         setOrderedLists(reorderedLists.map((l) => {
           if (l.id === sourceList.id) {
             return {
