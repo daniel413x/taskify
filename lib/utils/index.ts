@@ -14,3 +14,5 @@ export const errorCatch = (error: any): string => {
   }
   return error.message;
 };
+
+export const fetcher = (url: string) => fetch(url).then((res) => res.json());
