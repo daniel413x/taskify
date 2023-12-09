@@ -8,7 +8,7 @@ import { ListWithCards } from '@/lib/types';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import useOnKeyDown from '@/lib/hooks/useOnKeyDown';
-import useInlineEditing from './useInlineEditing';
+import useInlineEditing from '@/lib/hooks/useInlineEditing';
 import ListOptions from './ListOptions';
 
 interface ListHeaderProps {

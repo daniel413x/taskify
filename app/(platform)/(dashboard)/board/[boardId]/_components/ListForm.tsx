@@ -9,8 +9,8 @@ import { toast } from 'sonner';
 import createList from '@/actions/lists/create';
 import { useRouter } from 'next/navigation';
 import { useOnClickOutside } from 'usehooks-ts';
+import useInlineEditing from '@/lib/hooks/useInlineEditing';
 import ListWrapper from './ListWrapper';
-import useInlineEditing from './useInlineEditing';
 
 interface ListFormProps {
   boardId: string;

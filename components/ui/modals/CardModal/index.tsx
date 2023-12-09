@@ -8,6 +8,7 @@ import { CARDS_ROUTE } from '@/lib/data/routes';
 import { Dialog, DialogContent } from '../../common/shadcn/dialog';
 import useCardModal from './useCardModal';
 import Header from './Header';
+import Description from './Description';
 
 const CardModal: FC = () => {
   const {
@@ -26,6 +27,13 @@ const CardModal: FC = () => {
     >
       <DialogContent>
         {!card ? <Header.Skeleton /> : <Header card={card} />}
+        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-4">
+          <div className="col-span-3">
+            <div className="w-full space-y-6">
+              {!card ? <Description.Skeleton /> : <Description card={card} />}
+            </div>
+          </div>
+        </div>
       </DialogContent>
     </Dialog>
   );

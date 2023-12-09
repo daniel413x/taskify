@@ -11,7 +11,7 @@ interface FormTextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> 
   label?: string;
   errors?: Record<string, string[]> | undefined;
   id: string;
-  onKeyDown: (...args: any[]) => void;
+  onKeyDown?: (...args: any[]) => void;
 }
 
 const FormTextarea = forwardRef<HTMLTextAreaElement, FormTextareaProps>(({

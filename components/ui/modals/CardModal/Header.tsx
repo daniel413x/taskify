@@ -76,12 +76,11 @@ const Header = ({
 
 Header.Skeleton = () => (
   <div className="flex items-start gap-x-3 mb-6">
-    <Skeleton className="h-6 w-6 mt-1 bg-neutral-200">
-      <div>
-        <Skeleton className="h-6 w-24 mb-1 bg-neutral-200" />
-        <Skeleton className="h-4 w-12 bg-neutral-200" />
-      </div>
-    </Skeleton>
+    <Skeleton className="h-6 w-6 mt-1 bg-neutral-200" />
+    <div>
+      <Skeleton className="h-6 w-24 mb-1 bg-neutral-200" />
+      <Skeleton className="h-4 w-12 bg-neutral-200" />
+    </div>
   </div>
 );
 

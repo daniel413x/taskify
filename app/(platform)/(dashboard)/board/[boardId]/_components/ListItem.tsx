@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import ListWrapper from './ListWrapper';
 import ListHeader from './ListHeader';
-import useInlineEditing from './useInlineEditing';
+import useInlineEditing from '@/lib/hooks/useInlineEditing';
 import CardForm from './CardForm';
 import CardItem from './CardItem';
 

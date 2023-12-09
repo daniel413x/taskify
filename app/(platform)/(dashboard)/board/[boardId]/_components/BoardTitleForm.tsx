@@ -7,7 +7,7 @@ import useAction from '@/lib/hooks/useAction';
 import { Board } from '@prisma/client';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import useInlineEditing from './useInlineEditing';
+import useInlineEditing from '@/lib/hooks/useInlineEditing';
 
 interface BoardTitleFormProps {
   board: Board;
