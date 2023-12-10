@@ -9,6 +9,7 @@ import { Dialog, DialogContent } from '../../common/shadcn/dialog';
 import useCardModal from './useCardModal';
 import Header from './Header';
 import Description from './Description';
+import Actions from './Actions';
 
 const CardModal: FC = () => {
   const {
@@ -33,6 +34,13 @@ const CardModal: FC = () => {
               {!card ? <Description.Skeleton /> : <Description card={card} />}
             </div>
           </div>
+          {!card ? (
+            <Actions.Skeleton />
+          ) : (
+            <Actions
+              card={card}
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>
