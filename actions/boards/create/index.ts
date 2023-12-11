@@ -2,15 +2,19 @@
 
 import prismadb from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@clerk/nextjs';
+import { auth, currentUser } from '@clerk/nextjs';
 import { BOARD_ROUTE } from '@/lib/data/routes';
 import { createValidatedAction } from '@/actions/utils/create-validated-action';
-import CreateBoardSchema from './schema';
+import { createAuditLog } from '@/lib/utils';
+import { ACTION, ENTITY_TYPE } from '@prisma/client';
+import { v4 as uuid } from 'uuid';
 import { CreateBoardInputType } from './types';
+import CreateBoardSchema from './schema';
 
 const handler = async (data: CreateBoardInputType) => {
   const { userId, orgId } = auth();
-  if (!userId || !orgId) {
+  const user = await currentUser();
+  if (!userId || !orgId || !user) {
     return {
       error: 'Unauthorized',
     };
@@ -30,17 +34,30 @@ const handler = async (data: CreateBoardInputType) => {
   }
   let board;
   try {
-    board = await prismadb.board.create({
-      data: {
-        orgId,
+    const id = uuid();
+    const transaction = [
+      prismadb.board.create({
+        data: {
+          id,
+          orgId,
+          title,
+          imageId,
+          imageThumbUrl,
+          imageFullUrl,
+          imageLinkHTML,
+          imageUserName,
+        },
+      }),
+      createAuditLog(
+        id,
+        ENTITY_TYPE.BOARD,
         title,
-        imageId,
-        imageThumbUrl,
-        imageFullUrl,
-        imageLinkHTML,
-        imageUserName,
-      },
-    });
+        ACTION.CREATE,
+        orgId!,
+        user!,
+      ),
+    ];
+    board = (await prismadb.$transaction(transaction))[0];
   } catch (e: any) {
     return {
       error: 'Could not create',
