@@ -1,4 +1,4 @@
-import { ACTION, ENTITY_TYPE } from '@prisma/client';
+import { ACTION, AuditLog, ENTITY_TYPE } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { User } from '@clerk/nextjs/server';
@@ -43,4 +43,19 @@ export const createAuditLog = (
       userName: `${user.firstName} ${user.lastName}`,
     },
   });
+};
+
+export const generateLogMessage = (log: AuditLog) => {
+  const { action, entityTitle, entityType } = log;
+  const entity = `${entityType.toLowerCase()} "${entityTitle}"`;
+  switch (action) {
+    case ACTION.CREATE:
+      return `created ${entity}`;
+    case ACTION.UPDATE:
+      return `updated ${entity}`;
+    case ACTION.DELETE:
+      return `deleted ${entity}`;
+    default:
+      return `unknown action ${entity}`;
+  }
 };

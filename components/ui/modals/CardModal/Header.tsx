@@ -8,6 +8,7 @@ import updateCard from '@/actions/cards/update';
 import { useParams } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
+import { CARD_QUERY_KEY } from '@/lib/data/query-keys';
 import { Skeleton } from '../../common/shadcn/skeleton';
 import FormInput from '../../common/form/FormInput';
 
@@ -25,7 +26,7 @@ const Header = ({
   } = useAction(updateCard, {
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ['card', data.id],
+        queryKey: [CARD_QUERY_KEY, data.id],
       });
       toast.success(`Renamed to ${data.title}!`);
       setTitle(data.title);

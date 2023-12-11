@@ -5,3 +5,4 @@ export const SETTINGS_ROUTE = 'settings';
 export const BILLING_ROUTE = 'billing';
 export const BOARD_ROUTE = 'board';
 export const CARDS_ROUTE = 'cards';
+export const LOGS_ROUTE = 'logs';
