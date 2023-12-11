@@ -2,15 +2,19 @@
 
 import prismadb from '@/lib/db';
 import { revalidatePath } from 'next/cache';
-import { auth } from '@clerk/nextjs';
+import { auth, currentUser } from '@clerk/nextjs';
 import { BOARD_ROUTE } from '@/lib/data/routes';
 import { createValidatedAction } from '@/actions/utils/create-validated-action';
-import CreateCardSchema from './schema';
+import { createAuditLog } from '@/lib/utils';
+import { v4 as uuid } from 'uuid';
+import { ACTION, ENTITY_TYPE, PrismaPromise } from '@prisma/client';
 import { CreateCardInputType } from './types';
+import CreateCardSchema from './schema';
 
 const handler = async (data: CreateCardInputType) => {
   const { userId, orgId } = auth();
-  if (!userId || !orgId) {
+  const user = await currentUser();
+  if (!userId || !orgId || !user) {
     return {
       error: 'Unauthorized',
     };
@@ -39,13 +43,26 @@ const handler = async (data: CreateCardInputType) => {
       select: { order: true },
     });
     const newOrder = lastCard ? lastCard.order + 1 : 1;
-    card = await prismadb.card.create({
-      data: {
-        listId,
+    const id = uuid();
+    const transaction = [
+      prismadb.card.create({
+        data: {
+          listId,
+          title,
+          id,
+          order: newOrder,
+        },
+      }),
+      createAuditLog(
+        id,
+        ENTITY_TYPE.CARD,
         title,
-        order: newOrder,
-      },
-    });
+        ACTION.CREATE,
+        orgId,
+        user,
+      ),
+    ];
+    card = (await prismadb.$transaction(transaction as PrismaPromise<any>[]))[0];
   } catch (e: any) {
     return {
       error: 'Could not create',
