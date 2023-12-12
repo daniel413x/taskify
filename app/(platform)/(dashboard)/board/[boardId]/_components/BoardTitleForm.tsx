@@ -38,6 +38,10 @@ const BoardTitleForm = ({
     },
   });
   const onSubmit = (formData: FormData) => {
+    const newTitle = formData.get('title') as string;
+    if (newTitle === title) {
+      return;
+    }
     execute({ title: formData.get('title') as string, id: board.id });
   };
   if (isEditing) {
