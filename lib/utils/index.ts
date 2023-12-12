@@ -2,7 +2,9 @@ import { ACTION, AuditLog, ENTITY_TYPE } from '@prisma/client';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { User } from '@clerk/nextjs/server';
+import { auth } from '@clerk/nextjs';
 import prismadb from '../db';
+import { MAX_FREE_BOARDS } from '../data/consts';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -58,4 +60,32 @@ export const generateLogMessage = (log: AuditLog) => {
     default:
       return `unknown action ${entity}`;
   }
+};
+
+export const hasBoardsRemaining = async () => {
+  const { orgId } = auth();
+  if (!orgId) {
+    throw new Error('Unauthorized');
+  }
+  const orgLimit = await prismadb.orgLimit.findUnique({
+    where: { orgId },
+  });
+  if (!orgLimit || orgLimit.count < MAX_FREE_BOARDS) {
+    return true;
+  }
+  return false;
+};
+
+export const getBoardsCreatedCount = async () => {
+  const { orgId } = auth();
+  if (!orgId) {
+    return 0;
+  }
+  const orgLimit = await prismadb.orgLimit.findUnique({
+    where: { orgId },
+  });
+  if (!orgLimit) {
+    return 0;
+  }
+  return orgLimit.count;
 };

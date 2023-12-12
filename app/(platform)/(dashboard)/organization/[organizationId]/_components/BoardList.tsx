@@ -7,6 +7,8 @@ import { BOARD_ROUTE, SELECT_ORGANIZATION_ROUTE } from '@/lib/data/routes';
 import prismadb from '@/lib/db';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/common/shadcn/skeleton';
+import { getBoardsCreatedCount } from '@/lib/utils';
+import { MAX_FREE_BOARDS } from '@/lib/data/consts';
 import Hint from './Hint';
 
 const BoardList = async () => {
@@ -22,6 +24,7 @@ const BoardList = async () => {
       createdAt: 'desc',
     },
   });
+  const boardsCreated = await getBoardsCreatedCount();
   return (
     <div className="space-y-4">
       <div className=" flex items-center font-semibold text-lg text-neutral-700">
@@ -55,7 +58,9 @@ const BoardList = async () => {
                 Create new board
               </span>
               <span className="text-sm">
-                5 remaining
+                {MAX_FREE_BOARDS - boardsCreated}
+                {' '}
+                remaining
               </span>
               <Hint
                 side="bottom"

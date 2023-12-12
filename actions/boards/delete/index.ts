@@ -7,7 +7,9 @@ import { ORGANIZATION_ROUTE } from '@/lib/data/routes';
 import { createValidatedAction } from '@/actions/utils/create-validated-action';
 import { redirect } from 'next/navigation';
 import { createAuditLog } from '@/lib/utils';
-import { ACTION, ENTITY_TYPE } from '@prisma/client';
+import {
+  ACTION, ENTITY_TYPE, PrismaPromise,
+} from '@prisma/client';
 import ApiException from '@/app/api/(exception)/ApiException';
 import { DeleteBoardInputType, DeleteBoardReturnType } from './types';
 import DeleteBoardSchema from './schema';
@@ -35,7 +37,7 @@ const handler = async (data: DeleteBoardInputType): Promise<DeleteBoardReturnTyp
     if (!board) {
       throw new ApiException('Board not found', 404);
     }
-    const transaction = [
+    const transaction: PrismaPromise<any>[] = [
       prismadb.board.delete({
         where,
       }),
@@ -48,6 +50,27 @@ const handler = async (data: DeleteBoardInputType): Promise<DeleteBoardReturnTyp
         user,
       ),
     ];
+    // handle free user restriction counting
+    const isPro = false;
+    if (!isPro) {
+      const orgLimit = await prismadb.orgLimit.findUnique({
+        where: {
+          orgId,
+        },
+      });
+      if (orgLimit) {
+        if (orgLimit.count > 0) {
+          transaction.push(prismadb.orgLimit.update({
+            where: { orgId },
+            data: { count: orgLimit.count - 1 },
+          }));
+        }
+      } else {
+        transaction.push(prismadb.orgLimit.create({
+          data: { orgId, count: 0 },
+        }));
+      }
+    }
     await prismadb.$transaction(transaction);
   } catch (e) {
     return {

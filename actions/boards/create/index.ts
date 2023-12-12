@@ -5,8 +5,8 @@ import { revalidatePath } from 'next/cache';
 import { auth, currentUser } from '@clerk/nextjs';
 import { BOARD_ROUTE } from '@/lib/data/routes';
 import { createValidatedAction } from '@/actions/utils/create-validated-action';
-import { createAuditLog } from '@/lib/utils';
-import { ACTION, ENTITY_TYPE } from '@prisma/client';
+import { createAuditLog, hasBoardsRemaining } from '@/lib/utils';
+import { ACTION, ENTITY_TYPE, PrismaPromise } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 import { CreateBoardInputType } from './types';
 import CreateBoardSchema from './schema';
@@ -17,6 +17,13 @@ const handler = async (data: CreateBoardInputType) => {
   if (!userId || !orgId || !user) {
     return {
       error: 'Unauthorized',
+    };
+  }
+  const isPro = false;
+  const canCreate = await hasBoardsRemaining();
+  if (!isPro && !canCreate) {
+    return {
+      error: 'You have reached your limit of free boards. Please upgrade to create more.',
     };
   }
   const { title, image } = data;
@@ -35,7 +42,7 @@ const handler = async (data: CreateBoardInputType) => {
   let board;
   try {
     const id = uuid();
-    const transaction = [
+    const transaction: PrismaPromise<any>[] = [
       prismadb.board.create({
         data: {
           id,
@@ -57,6 +64,24 @@ const handler = async (data: CreateBoardInputType) => {
         user!,
       ),
     ];
+    // handle free user restriction counting
+    if (!isPro) {
+      const orgLimit = await prismadb.orgLimit.findUnique({
+        where: {
+          orgId,
+        },
+      });
+      if (orgLimit) {
+        transaction.push(prismadb.orgLimit.update({
+          where: { orgId },
+          data: { count: orgLimit.count + 1 },
+        }));
+      } else {
+        transaction.push(prismadb.orgLimit.create({
+          data: { orgId, count: 0 },
+        }));
+      }
+    }
     board = (await prismadb.$transaction(transaction))[0];
   } catch (e: any) {
     return {

@@ -6,7 +6,7 @@ import { CardWithList } from '@/lib/types';
 import { fetcher } from '@/lib/utils';
 import { CARDS_ROUTE, LOGS_ROUTE } from '@/lib/data/routes';
 import { AuditLog } from '@prisma/client';
-import { CARD_LOGS_QUERY_KEY, CARD_QUERY_KEY } from '@/lib/data/query-keys';
+import { CARD_LOGS_QUERY_KEY, CARD_QUERY_KEY } from '@/lib/data/consts';
 import { Dialog, DialogContent } from '../../common/shadcn/dialog';
 import useCardModal from './useCardModal';
 import Header from './Header';

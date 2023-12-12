@@ -8,7 +8,7 @@ import { useParams } from 'next/navigation';
 import useAction from '@/lib/hooks/useAction';
 import updateCard from '@/actions/cards/update';
 import { toast } from 'sonner';
-import { CARD_LOGS_QUERY_KEY, CARD_QUERY_KEY } from '@/lib/data/query-keys';
+import { CARD_LOGS_QUERY_KEY, CARD_QUERY_KEY } from '@/lib/data/consts';
 import { Skeleton } from '../../common/shadcn/skeleton';
 import { Button } from '../../common/shadcn/button';
 import FormTextarea from '../../common/form/FormTextarea';
