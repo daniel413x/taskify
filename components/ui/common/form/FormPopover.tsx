@@ -15,6 +15,7 @@ import FormInput from './FormInput';
 import FormSubmit from './FormSubmit';
 import FormPicker from './FormPicker';
 import CloseButton from '../CloseButton';
+import useProModal from '../../modals/ProModal/useProModal';
 
 interface FormPopoverProps extends ButtonProps {
   children: Children;
@@ -29,6 +30,7 @@ const FormPopover = ({
   align,
   sideOffset = 0,
 }: FormPopoverProps) => {
+  const proModal = useProModal();
   const router = useRouter();
   const closeRef = useRef<ElementRef<'button'>>(null);
   const { execute, fieldErrors } = useAction(createBoard, {
@@ -39,6 +41,7 @@ const FormPopover = ({
     },
     onError: (e) => {
       toast.error(e);
+      proModal.onOpen();
     },
   });
   const onSubmit = (formData: FormData) => {

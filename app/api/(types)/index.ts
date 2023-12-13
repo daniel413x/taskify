@@ -1,11 +1,11 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
 type ApiRouteHandlerReturn = Promise<{ body?: any, init?: ResponseInit }>;
 
 export interface ApiHandlerProps<T> {
   (
-    req: NextApiRequest,
-    res: NextApiResponse & { params: any }
+    req: NextRequest,
+    res: NextResponse & { params: any }
   ): T;
 }
 

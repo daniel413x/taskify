@@ -1,12 +1,12 @@
 import { auth } from '@clerk/nextjs';
 import prismadb from '@/lib/db';
-import { NextApiRequest } from 'next';
+import { NextRequest } from 'next/server';
 import BaseApi from '../../(base)/BaseApi';
 import ApiException from '../../(exception)/ApiException';
 import { ApiRouteHandler } from '../../(types)';
 
 export const GET: ApiRouteHandler = BaseApi(async (
-  _req: NextApiRequest,
+  _req: NextRequest,
   { params }: { params: { cardId: string; } },
 ) => {
   const { userId, orgId } = auth();

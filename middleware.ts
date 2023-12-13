@@ -5,6 +5,7 @@ import { ORGANIZATION_ROUTE, SELECT_ORGANIZATION_ROUTE } from './lib/data/routes
 export default authMiddleware({
   publicRoutes: [
     '/',
+    '/api/webhook',
   ],
   afterAuth(auth, req) {
     if (auth.userId && auth.isPublicRoute) {

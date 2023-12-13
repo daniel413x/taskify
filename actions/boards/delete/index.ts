@@ -6,7 +6,7 @@ import { auth, currentUser } from '@clerk/nextjs';
 import { ORGANIZATION_ROUTE } from '@/lib/data/routes';
 import { createValidatedAction } from '@/actions/utils/create-validated-action';
 import { redirect } from 'next/navigation';
-import { createAuditLog } from '@/lib/utils';
+import { checkSubscription, createAuditLog } from '@/lib/utils';
 import {
   ACTION, ENTITY_TYPE, PrismaPromise,
 } from '@prisma/client';
@@ -51,7 +51,7 @@ const handler = async (data: DeleteBoardInputType): Promise<DeleteBoardReturnTyp
       ),
     ];
     // handle free user restriction counting
-    const isPro = false;
+    const isPro = await checkSubscription();
     if (!isPro) {
       const orgLimit = await prismadb.orgLimit.findUnique({
         where: {
@@ -67,7 +67,7 @@ const handler = async (data: DeleteBoardInputType): Promise<DeleteBoardReturnTyp
         }
       } else {
         transaction.push(prismadb.orgLimit.create({
-          data: { orgId, count: 0 },
+          data: { orgId, count: 1 },
         }));
       }
     }

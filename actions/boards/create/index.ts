@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { auth, currentUser } from '@clerk/nextjs';
 import { BOARD_ROUTE } from '@/lib/data/routes';
 import { createValidatedAction } from '@/actions/utils/create-validated-action';
-import { createAuditLog, hasBoardsRemaining } from '@/lib/utils';
+import { checkSubscription, createAuditLog, hasBoardsRemaining } from '@/lib/utils';
 import { ACTION, ENTITY_TYPE, PrismaPromise } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 import { CreateBoardInputType } from './types';
@@ -19,7 +19,7 @@ const handler = async (data: CreateBoardInputType) => {
       error: 'Unauthorized',
     };
   }
-  const isPro = false;
+  const isPro = await checkSubscription();
   const canCreate = await hasBoardsRemaining();
   if (!isPro && !canCreate) {
     return {
@@ -78,7 +78,7 @@ const handler = async (data: CreateBoardInputType) => {
         }));
       } else {
         transaction.push(prismadb.orgLimit.create({
-          data: { orgId, count: 0 },
+          data: { orgId, count: 1 },
         }));
       }
     }
