@@ -62,6 +62,7 @@ const FormPicker = ({
       <div className="grid grid-cols-3 gap-2 mb-2">
         {images.map((i) => (
           <Button
+            key={i.id}
             type="button"
             variant="ghost"
             className={cn('cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted [height:unset]', isLoading && 'opacity-50 hover:opacity-50 cursor-auto')}
@@ -72,6 +73,7 @@ const FormPicker = ({
               id={id}
               name={id}
               className="hidden"
+              readOnly
               checked={selectedImageId === i.id}
               disabled={pending}
               value={`${i.id}|${i.urls.thumb}|${i.urls.full}|${i.links.html}|${i.user.name}`}

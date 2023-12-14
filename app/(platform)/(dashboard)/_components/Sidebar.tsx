@@ -81,15 +81,13 @@ const Sidebar = ({
         className="space-y-2"
       >
         {userMemberships.data.map(({ organization }) => (
-          <p key={organization.id} className="">
-            <NavItem
-              key={organization.id}
-              organization={organization as Organization}
-              isActive={activeOrganization?.id === organization.id}
-              isExpanded={expanded[organization.id]}
-              onExpand={onExpand}
-            />
-          </p>
+          <NavItem
+            key={organization.id}
+            organization={organization as Organization}
+            isActive={activeOrganization?.id === organization.id}
+            isExpanded={expanded[organization.id]}
+            onExpand={onExpand}
+          />
         ))}
       </Accordion>
     </>

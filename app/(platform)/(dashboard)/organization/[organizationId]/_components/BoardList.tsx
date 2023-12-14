@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/common/shadcn/button';
 import { auth } from '@clerk/nextjs';
 import { HelpCircle, User2 } from 'lucide-react';
 import FormPopover from '@/components/ui/common/form/FormPopover';
@@ -51,10 +50,7 @@ const BoardList = async () => {
         ))}
         <li key="create">
           <FormPopover sideOffset={10} side="right">
-            <Button
-              variant="ghost"
-              className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center    hover:bg-neutral-200 transition"
-            >
+            <div role="button" tabIndex={0} className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center    hover:bg-neutral-200 transition">
               <span className="text-sm">
                 Create new board
               </span>
@@ -70,7 +66,7 @@ const BoardList = async () => {
               >
                 <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
               </Hint>
-            </Button>
+            </div>
           </FormPopover>
         </li>
       </ul>

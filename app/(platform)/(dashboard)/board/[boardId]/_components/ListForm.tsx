@@ -62,6 +62,7 @@ const ListForm = ({
           />
           <input
             hidden
+            readOnly
             value={boardId}
             name="boardId"
           />
