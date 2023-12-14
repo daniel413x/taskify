@@ -1,5 +1,18 @@
 import { Children } from '@/lib/types';
+import { auth } from '@clerk/nextjs';
+import { startCase } from 'lodash';
+import siteConfig from '@/lib/config';
 import Sidebar from '../_components/Sidebar';
+
+export const generateMetadata = async () => {
+  const { orgSlug } = auth();
+  return {
+    title: {
+      default: `${startCase(orgSlug || 'organization')}`,
+      template: `%s / ${startCase(orgSlug || 'organization')} / ${siteConfig.title}`,
+    },
+  };
+};
 
 interface OrganizationLayoutProps {
   children: Children;

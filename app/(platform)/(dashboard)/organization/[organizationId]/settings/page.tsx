@@ -1,4 +1,9 @@
 import { OrganizationProfile } from '@clerk/nextjs';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Settings',
+};
 
 const SettingsPage = () => (
   <OrganizationProfile

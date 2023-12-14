@@ -3,6 +3,7 @@ import prismadb from '@/lib/db';
 import { Children } from '@/lib/types';
 import { auth } from '@clerk/nextjs';
 import { notFound, redirect } from 'next/navigation';
+import { startCase } from 'lodash';
 import BoardNavbar from './_components/BoardNavbar';
 
 interface MetadataProps {
@@ -12,7 +13,7 @@ interface MetadataProps {
 export const generateMetadata = async ({
   params,
 }: MetadataProps) => {
-  const { orgId } = auth();
+  const { orgId, orgSlug } = auth();
   if (!orgId) {
     return {
       title: 'Board',
@@ -24,7 +25,7 @@ export const generateMetadata = async ({
     },
   });
   return {
-    title: board?.title || 'Board',
+    title: board?.title ? `${board?.title} / ${startCase(orgSlug || 'organization')}` : 'Board',
   };
 };
 

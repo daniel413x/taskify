@@ -1,13 +1,9 @@
-import { auth } from '@clerk/nextjs';
-import { startCase } from 'lodash';
 import { checkSubscription } from '@/lib/utils';
+import { Metadata } from 'next';
 import OrganizationIdPageContent from './_components/OrganizationIdPageContent';
 
-export const generateMetadata = async () => {
-  const { orgSlug } = auth();
-  return {
-    title: startCase(orgSlug || 'organization'),
-  };
+export const metadata: Metadata = {
+  title: 'Boards',
 };
 
 const OrganizationIdPage = async () => {
