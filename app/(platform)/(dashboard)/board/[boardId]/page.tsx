@@ -2,7 +2,7 @@ import { SELECT_ORGANIZATION_ROUTE } from '@/lib/data/routes';
 import prismadb from '@/lib/db';
 import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
-import ListContainer from './_components/ListContainer';
+import BoardPageContent from './_components/BoardPageContent';
 
 interface BoardIdPageProps {
   params: {
@@ -36,9 +36,11 @@ const BoardIdPage = async ({
     },
   });
   return (
-    <div className="p-4 h-full overflow-x-auto">
-      <ListContainer boardId={params.boardId} lists={lists} />
-    </div>
+    <BoardPageContent
+      lists={lists}
+      params={params}
+    />
   );
 };
+
 export default BoardIdPage;
