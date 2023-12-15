@@ -3,10 +3,11 @@ import { headers } from 'next/headers';
 import prismadb from '@/lib/db';
 import stripe from '@/lib/stripe';
 import BaseApi from '@/app/api/(base)/BaseApi';
-import { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import ApiException from '../(exception)/ApiException';
+import { ApiRouteHandler } from '../(types)';
 
-export const POST = BaseApi(async (req: NextRequest) => {
+export const POST: ApiRouteHandler = BaseApi(async (req) => {
   const body = await req.text();
   const signature = headers().get('Stripe-Signature') as string;
   let event: Stripe.Event;
@@ -55,5 +56,5 @@ export const POST = BaseApi(async (req: NextRequest) => {
       },
     });
   }
-  return { body: null, init: { status: 200 } };
+  return NextResponse.json(null, { status: 200 });
 });

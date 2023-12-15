@@ -6,17 +6,14 @@
  */
 
 import { NextResponse } from 'next/server';
-import { ApiHandlerProps, ApiRouteHandler } from '../(types)';
+import { ApiRouteHandler } from '../(types)';
 
-type BaseApiHandler = ApiHandlerProps<Promise<NextResponse>>;
-
-export default (handler: ApiRouteHandler): BaseApiHandler => async (
+export default (handler: ApiRouteHandler): ApiRouteHandler => async (
   req,
   res,
 ) => {
   try {
-    const data = await handler(req, res);
-    return NextResponse.json(data.body || {}, data.init || {});
+    return await handler(req, res);
   } catch (error: any) {
     if (error?.isApiException) {
       return new NextResponse(error.message, { status: error.statusCode });

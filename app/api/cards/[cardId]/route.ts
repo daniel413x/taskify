@@ -1,12 +1,12 @@
 import { auth } from '@clerk/nextjs';
 import prismadb from '@/lib/db';
-import { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import BaseApi from '../../(base)/BaseApi';
 import ApiException from '../../(exception)/ApiException';
 import { ApiRouteHandler } from '../../(types)';
 
 export const GET: ApiRouteHandler = BaseApi(async (
-  _req: NextRequest,
+  _req,
   { params }: { params: { cardId: string; } },
 ) => {
   const { userId, orgId } = auth();
@@ -30,7 +30,5 @@ export const GET: ApiRouteHandler = BaseApi(async (
       },
     },
   });
-  return {
-    body: card,
-  };
+  return NextResponse.json(card);
 });

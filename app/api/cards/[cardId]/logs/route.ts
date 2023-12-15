@@ -1,13 +1,13 @@
 import { auth } from '@clerk/nextjs';
 import prismadb from '@/lib/db';
-import { NextApiRequest } from 'next';
 import { ENTITY_TYPE } from '@prisma/client';
+import { NextResponse } from 'next/server';
 import BaseApi from '../../../(base)/BaseApi';
 import ApiException from '../../../(exception)/ApiException';
 import { ApiRouteHandler } from '../../../(types)';
 
 export const GET: ApiRouteHandler = BaseApi(async (
-  _req: NextApiRequest,
+  _req,
   { params }: { params: { cardId: string; } },
 ) => {
   const { userId, orgId } = auth();
@@ -25,7 +25,5 @@ export const GET: ApiRouteHandler = BaseApi(async (
     },
     take: 3,
   });
-  return {
-    body: auditLogs,
-  };
+  return NextResponse.json(auditLogs);
 });

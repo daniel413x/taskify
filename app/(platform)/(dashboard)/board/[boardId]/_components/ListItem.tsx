@@ -1,9 +1,9 @@
 import { ListWithCards } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
+import useInlineEditing from '@/lib/hooks/useInlineEditing';
 import ListWrapper from './ListWrapper';
 import ListHeader from './ListHeader';
-import useInlineEditing from '@/lib/hooks/useInlineEditing';
 import CardForm from './CardForm';
 import CardItem from './CardItem';
 
