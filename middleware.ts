@@ -19,7 +19,7 @@ export default authMiddleware({
     if (!auth.userId && !auth.isPublicRoute) {
       return redirectToSignIn({ returnBackUrl: req.url });
     }
-    if (auth.userId && !auth.orgId && req.nextUrl.pathname === `/${SELECT_ORGANIZATION_ROUTE}`) {
+    if (auth.userId && !auth.orgId && req.nextUrl.pathname !== `/${SELECT_ORGANIZATION_ROUTE}`) {
       const orgSelection = new URL(`/${SELECT_ORGANIZATION_ROUTE}`, req.url);
       return NextResponse.redirect(orgSelection);
     }
