@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import useOnKeyDown from '@/lib/hooks/useOnKeyDown';
 import useInlineEditing from '@/lib/hooks/useInlineEditing';
+import { cn } from '@/lib/utils';
 import ListOptions from './ListOptions';
 
 interface ListHeaderProps {
@@ -63,6 +64,7 @@ const ListHeader = ({
     }
   };
   useOnKeyDown('Escape', onEscape);
+  const maxW = 'max-w-[216px]';
   return (
     <div className="p-3 font-semibold text-sm flex justify-center items-center gap-x-2">
       {isEditing ? (
@@ -86,7 +88,7 @@ const ListHeader = ({
             readOnly
           />
           <FormInput
-            className="text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-white"
+            className={cn('text-sm px-[7px] py-1 h-7 font-medium border-transparent hover:border-input focus:border-input transition truncate bg-transparent focus:bg-white', maxW)}
             ref={inputRef}
             id="title"
             placeholder="Enter list title..."
@@ -100,11 +102,13 @@ const ListHeader = ({
         </form>
       ) : (
         <Button
-          className="w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent items-start justify-start"
+          className={cn('w-full text-sm px-2.5 py-1 h-7 font-medium border-transparent items-start justify-start', 'maxW')}
           variant="ghost"
           onClick={enableEditing}
         >
-          {title}
+          <span className="truncate">
+            {title}
+          </span>
         </Button>
       )}
       <ListOptions

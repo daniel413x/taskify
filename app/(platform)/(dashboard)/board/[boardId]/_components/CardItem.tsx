@@ -28,9 +28,11 @@ const CardItem = ({
           role="button"
           variant="ghost"
           onClick={() => cardModal.onOpen(card.id)}
-          className="truncate border-2 border-transparent hover:border-black hover:bg-white py-2 px-3 text-sm bg-white rounded-md shadow-sm text-neutral-700 justify-start"
+          className="border-2 border-transparent hover:border-black hover:bg-white py-2 px-3 text-sm bg-white rounded-md shadow-sm text-neutral-700 justify-start"
         >
-          {card.title}
+          <span className="truncate">
+            {card.title}
+          </span>
         </Button>
       )}
     </Draggable>
